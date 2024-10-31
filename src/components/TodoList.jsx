@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
-import List from '@mui/material/List';
+import {List, Box, Typography} from '@mui/material';
 import TodoForm from './TodoForm';
 
   // fetch data from a database or local storage in this case
@@ -47,11 +47,21 @@ import TodoForm from './TodoForm';
 
     function addTodo(text){
       setTodos((prevTodos) => {
-        return [...prevTodos, {text: text, id: 8, completed: false}]
+        return [...prevTodos, {text: text, id: crypto.randomUUID(), completed: false}]
       })
     }
 
     return (
+      <Box sx={{
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        m: 3
+      }}>
+        <Typography variant="h2" component="div" sx={{ flexGrow: 1 }}>
+            Todos
+          </Typography>
         <List  sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         {todos.map((todo) => {
             return <TodoItem todo={todo} 
@@ -61,6 +71,7 @@ import TodoForm from './TodoForm';
         })}
         <TodoForm addTodo={addTodo}/>
         </List>
+      </Box>
     )
   }
 

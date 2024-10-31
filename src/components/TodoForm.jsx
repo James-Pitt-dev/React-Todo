@@ -22,7 +22,7 @@ export default function TodoForm({addTodo}){
                 <TextField 
                     onChange={handleChange} 
                     value={text} id="outlined-basic" 
-                    label="Outlined" 
+                    label="Add Todo" 
                     variant="outlined"
                     InputProps = {
                         {
