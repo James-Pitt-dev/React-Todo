@@ -1,20 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
 import List from '@mui/material/List';
 import TodoForm from './TodoForm';
 
+  // fetch data from a database or local storage in this case
+  // for initial data in list
+  function getInitialData(){
 
-const initialTodos = [
-    {id: '1', text:'Walk the dog', completed: false},
-    {id: '2', text:'Walk the dog', completed: true},
-    {id: '3', text:'Walk the dog', completed: false},
-    {id: '4', text:'Walk the dog', completed: true}
-  ]
+    const data = JSON.parse(localStorage.getItem("todos"))
+    if (!data){
+      return [];
+    } else return data;
+  }
+
+  
 
   export default function TodoList(){
 
-    const [todos, setTodos] = useState(initialTodos);
+    const [todos, setTodos] = useState(getInitialData);
     
+    //save to local storage, database stand in essentially
+    useEffect(() => {
+      localStorage.setItem(
+        "todos",
+        JSON.stringify(todos)
+      )
+    }, [todos]);
+
     function removeTodo(id){
       setTodos((prevTodos) => {
        return prevTodos.filter((t) => { //return?
@@ -33,6 +45,12 @@ const initialTodos = [
       });
     }
 
+    function addTodo(text){
+      setTodos((prevTodos) => {
+        return [...prevTodos, {text: text, id: 8, completed: false}]
+      })
+    }
+
     return (
         <List  sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         {todos.map((todo) => {
@@ -41,7 +59,7 @@ const initialTodos = [
             key={todo.id}
             toggle={() => {toggleTodo(todo.id)}} />
         })}
-        <TodoForm />
+        <TodoForm addTodo={addTodo}/>
         </List>
     )
   }
